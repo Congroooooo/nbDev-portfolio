@@ -1,0 +1,22 @@
+export type Img = { src: string; alt: string };
+export type Project = {
+  slug: string; name: string; year?: string;
+  category: 'Hackathon' | 'Client' | 'Academic';
+  tagline: string; summary: string;
+  problem: string; built: string; role?: string; outcome: string;
+  features: string[]; stack?: string[];
+  award?: string; hackathonId?: string; liveUrl?: string;
+  image?: Img; featured: boolean;
+};
+export type HackathonTier = 'champion' | 'podium' | 'top10' | 'participant';
+export type Hackathon = { id: string; name: string; date: string; sortKey: string;
+  placement: string; tier: HackathonTier; story: string; projectSlug?: string; image?: Img };
+export type Experience = { role: string; company: string; location: string; dates: string; bullets: string[] };
+export type SkillGroup = { title: string; items: string[] };
+export type Award = { title: string; detail: string };
+export type EventItem = { title: string; date: string; badge: string; body: string; image?: Img; projectSlug?: string };
+export type Certificate = { title: string; date: string; image: Img };
+export type Social = { label: string; href: string };
+export type StoryFrame = { index: string; sentence: string; counter: string; caption: string };
+export type Win = { headline: string; body: string; initials: string; event: string; meta: string; hackathonId: string };
+export type Stat = { value: number; label: string; sub: string; format?: 'plain' | 'year' };

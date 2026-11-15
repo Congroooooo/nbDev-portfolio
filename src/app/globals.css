@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
+@theme {
+  --color-ink: #0b0c0c;
+  --color-ink-2: #141615;
+  --color-ink-3: #1d201f;
+  --color-bone: #ecebe6;
+  --color-bone-2: #d2d0c9;
+  --color-mute: #8a8c88;
+  --color-accent: #2ee6a6;
+  --color-accent-ink: #0a8f63;
+  --color-line: rgb(236 235 230 / 0.14);
+  --color-line-l: rgb(11 12 12 / 0.14);
+
+  --font-sans: var(--font-geist-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 16px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --breakpoint-md: 768px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #0b0c0c;
+  --ink-2: #141615;
+  --ink-3: #1d201f;
+  --bone: #ecebe6;
+  --bone-2: #d2d0c9;
+  --mute: #8a8c88;
+  --accent: #2ee6a6;
+  --accent-ink: #0a8f63;
+  --line: rgb(236 235 230 / 0.14);
+  --line-l: rgb(11 12 12 / 0.14);
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-io: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --wrap: 1680px;
+  --pad: 20px;
+  --gut: 24px;
+  --sec: 96px;
+  --nav-h: 72px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 768px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --pad: 48px;
+    --sec: 160px;
+    --nav-h: 80px;
   }
 }
 
+html {
+  background: var(--ink);
+  color: var(--bone);
+  -webkit-text-size-adjust: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Layout helpers */
+@utility wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+/* Type scale (desktop → mobile via clamp). Display tracking tight. */
+@utility t-giga {
+  font-size: clamp(64px, 13.3vw, 192px);
+  line-height: 0.84;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+}
+@utility t-mega {
+  font-size: clamp(88px, 11.1vw, 160px);
+  line-height: 0.85;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+}
+@utility t-d1 {
+  font-size: clamp(56px, 7.8vw, 112px);
+  line-height: 0.93;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+@utility t-d2 {
+  font-size: clamp(52px, 6.7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+@utility t-d3 {
+  font-size: clamp(44px, 5.6vw, 80px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+@utility t-h1 {
+  font-size: clamp(40px, 4.4vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+}
+@utility t-h2 {
+  font-size: clamp(32px, 3.3vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+}
+@utility t-h3 {
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+@utility t-lead {
+  font-size: clamp(18px, 1.4vw, 20px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+@utility t-body {
+  font-size: 16px;
+  line-height: 24px;
+}
+@utility t-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+@utility t-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
