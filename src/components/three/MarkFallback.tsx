@@ -1,4 +1,4 @@
-import { MARK_POINTS, glyphHatch, type MarkPoint } from "./mark-path";
+import { MARK_POINTS, glyphHatch, type MarkPoint } from "./mark-points";
 import { cn } from "@/lib/cn";
 
 /** Fake extrusion offset (SVG units; y already flipped). */

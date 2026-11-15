@@ -61,7 +61,43 @@ test("story pins with motion", async ({ page }) => {
   const panelTop = await story.locator("[data-story-panel]").evaluate((el) => el.getBoundingClientRect().top);
   expect(Math.abs(panelTop)).toBeLessThan(2);
 
-  await expect(story.getByText("Twenty hours later", { exact: false })).toBeVisible();
+  // animated panel (aria-hidden; the sr-only list carries all four frames for screen readers)
+  const panel = story.locator("[data-story-panel]");
+  await expect(panel.locator("p", { hasText: "Twenty hours later" })).toBeVisible();
   await expect(page.locator('[data-testid="story-counter"]')).toHaveText("20h");
-  await expect(story.getByText("Every build starts")).toBeHidden();
+  await expect(panel.locator("p", { hasText: "Every build starts" })).toBeHidden();
+
+  // every sentence stays in the accessibility tree while pinned
+  for (const s of sentences) await expect(story.locator("ol.sr-only li", { hasText: s })).toHaveCount(1);
 });
+
+for (const vp of [
+  { width: 1440, height: 900 },
+  { width: 1280, height: 720 },
+  { width: 768, height: 700 },
+]) {
+  test(`story counter block never overlaps the sentence at ${vp.width}x${vp.height}`, async ({ page }) => {
+    await page.setViewportSize(vp);
+    await page.goto("/");
+    const scene = page.locator('[data-testid="home-scene"]');
+    await expect(scene).not.toHaveAttribute("data-scene-mode", "pending");
+    test.skip((await scene.getAttribute("data-scene-mode")) !== "webgl", "pinned layout only");
+
+    const panel = page.locator("[data-story-panel]");
+    const rects = await panel.evaluate((el) => {
+      const r = (q: string) => [...el.querySelectorAll<HTMLElement>(q)].map((n) => n.getBoundingClientRect());
+      const counter = el.querySelector('[data-testid="story-counter"]')!.getBoundingClientRect();
+      const captions = r('[data-story-fx]:not(.t-h1)').filter((b) => b.top > counter.top);
+      const sentences = r("p.t-h1");
+      const label = r("[data-story-fx].flex")[0];
+      return {
+        counterTop: counter.top,
+        blockBottom: Math.max(counter.bottom, ...captions.map((b) => b.bottom)),
+        sentenceTop: Math.min(...sentences.map((b) => b.top)),
+        labelBottom: label.bottom,
+      };
+    });
+    expect(rects.blockBottom).toBeLessThan(rects.sentenceTop);
+    expect(rects.counterTop).toBeGreaterThan(rects.labelBottom);
+  });
+}

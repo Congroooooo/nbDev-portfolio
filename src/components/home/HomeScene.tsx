@@ -7,7 +7,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useReducedMotion } from "@/components/motion";
 import { cn } from "@/lib/cn";
 import { MarkFallback } from "@/components/three/MarkFallback";
-import { createSceneState, type MarkSceneState } from "@/components/three/mark-path";
+import { createSceneState, type MarkSceneState } from "@/components/three/mark-points";
 import { Hero } from "./Hero";
 import { BuildStory } from "./BuildStory";
 
@@ -20,7 +20,9 @@ let webglCache: boolean | null = null;
 function hasWebGL2(): boolean {
   if (webglCache === null) {
     try {
-      webglCache = !!document.createElement("canvas").getContext("webgl2");
+      const gl = document.createElement("canvas").getContext("webgl2");
+      webglCache = !!gl;
+      gl?.getExtension("WEBGL_lose_context")?.loseContext(); // release the probe context
     } catch {
       webglCache = false;
     }
@@ -123,7 +125,7 @@ export function HomeScene() {
       tl.to(hours, { h: 20, duration: tr, ease: "none" }, b[0] - tr / 2);
       tl.to(st, { solid: 0.45, wire: 0.85, grid: 0.45, glow: 0.75, camZ: 3.1, camY: 0.15, rotY: -0.18, rotX: 0.1, duration: (b[1] - b[0]) * 0.75 }, b[0] - tr / 2);
       // f3 shipped: solid bone, camera passes close by the slash.
-      tl.to(st, { solid: 1, wire: 0.1, grid: 0, glow: 1, camZ: 1.3, camX: 0.18, camY: 0.05, rotY: 0.6, rotX: 0, slashZ: 0.32, duration: b[2] - b[1] + tr / 2 }, b[1] - tr / 2);
+      tl.to(st, { solid: 1, wire: 0.1, grid: 0, glow: 1, camZ: 1.3, camX: 0.18, camY: 0.05, rotY: 0.6, rotX: 0, slashZ: 0.32, duration: b[2] - b[1] }, b[1] - tr / 2);
       // f4 production: lit solid at rest pose, accent rim light.
       tl.to(st, { wire: 0, rim: 1, glow: 0.9, camZ: 4.0, camX: 0, camY: 0, rotY: 0.22, rotX: -0.06, slashZ: 0.12, duration: (E - b[2]) * 0.85 }, b[2] - tr / 2);
       // fade-out: the bone "Selected work" section scrolls over; canvas fades and stops.
@@ -155,6 +157,7 @@ export function HomeScene() {
       st.active = live.isActive;
 
       return () => {
+        if (counter) gsap.killTweensOf(counter); // blur swaps are created in onUpdate, outside this context
         st.active = true;
       };
     });

@@ -3,7 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { MarkScene } from "./MarkScene";
-import type { MarkSceneState } from "./mark-path";
+import type { MarkSceneState } from "./mark-points";
 
 /**
  * Full-viewport canvas for the mark. Loaded only via next/dynamic (ssr: false) from HomeScene

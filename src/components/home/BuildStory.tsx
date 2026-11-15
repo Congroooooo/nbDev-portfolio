@@ -17,62 +17,83 @@ export function BuildStory({ mode }: { mode: "pinned" | "static" }) {
       aria-label="The build"
       className="relative h-[250vh] text-bone md:h-[400vh]"
     >
-      <div data-story-panel className="sticky top-0 h-svh overflow-hidden">
+      {/* The animated panel shows one frame at a time; screen readers get all four here instead. */}
+      <ol className="sr-only">
+        {storyFrames.map((f, i) => (
+          <li key={f.index}>
+            {storyFrameTag(i + 1)}. {f.index}. {f.sentence} {f.counter}, {f.caption}.
+          </li>
+        ))}
+      </ol>
+      <div data-story-panel aria-hidden className="sticky top-0 h-svh overflow-hidden">
         <div className="wrap relative h-full">
-          {/* centered counter: one element, text written by the timeline */}
-          <div className="pointer-events-none absolute inset-x-0 top-[34%] flex flex-col items-center md:top-[56%]">
-            <p
-              data-testid="story-counter"
-              aria-hidden
-              className="t-mega font-mono text-accent tabular-nums will-change-[filter]"
+          {/* top row: index label left, frame tag right (one per frame, crossfaded) */}
+          {storyFrames.map((f, i) => (
+            <div
+              key={f.index}
+              data-story-fx={i}
+              className={cn(
+                "t-label pointer-events-none absolute inset-x-[var(--pad)] top-[calc(var(--nav-h)+16px)] flex justify-between gap-4 mix-blend-difference",
+                hidden(i),
+              )}
             >
-              {storyFrames[0].counter}
-            </p>
-            <div className="mt-3 grid" aria-hidden>
+              <p>{f.index}</p>
+              <p className="text-right">{storyFrameTag(i + 1)}</p>
+            </div>
+          ))}
+
+          {/* Bottom stack: the counter block is anchored to the top of the sentence area, so the
+              two can never overlap. All four sentences share one grid cell, so the cell is as tall
+              as the longest sentence and the counter does not jump between frames. */}
+          <div className="pointer-events-none absolute inset-x-[var(--pad)] bottom-10 flex flex-col md:bottom-12">
+            {/* counter: one element, text written by the timeline. It sits over the bright solid
+                in f3/f4, so it gets a soft ink scrim (accent keeps AA for large text) and the
+                caption an ink pill. */}
+            <div className="mb-10 flex flex-col items-center md:mb-14">
+              <div className="relative isolate">
+                <div
+                  className="absolute -inset-x-[45%] -inset-y-[40%] -z-10 rounded-full"
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, rgb(11 12 12 / 0.88), rgb(11 12 12 / 0.8) 55%, rgb(11 12 12 / 0) 100%)",
+                  }}
+                />
+                <p data-testid="story-counter" className="t-mega font-mono text-accent tabular-nums will-change-[filter]">
+                  {storyFrames[0].counter}
+                </p>
+              </div>
+              <div className="mt-3 grid">
+                {storyFrames.map((f, i) => (
+                  <p
+                    key={f.index}
+                    data-story-fx={i}
+                    className={cn(
+                      "t-label col-start-1 row-start-1 justify-self-center rounded-full bg-ink/85 px-3 py-0.5 text-center text-bone",
+                      hidden(i),
+                    )}
+                  >
+                    {f.caption}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid">
               {storyFrames.map((f, i) => (
+                // animated leaves carry their own blend mode (an animated parent would isolate it)
                 <p
                   key={f.index}
                   data-story-fx={i}
-                  className={cn("t-label col-start-1 row-start-1 text-center text-mute", hidden(i))}
+                  className={cn(
+                    "t-h1 md:t-d3 col-start-1 row-start-1 max-w-[15ch] self-end mix-blend-difference md:max-w-[20ch]",
+                    hidden(i),
+                  )}
                 >
-                  {f.caption}
+                  {f.sentence}
                 </p>
               ))}
             </div>
           </div>
-
-          {storyFrames.map((f, i) => (
-            <article
-              key={f.index}
-                            aria-label={storyFrameTag(i + 1)}
-              className="pointer-events-none absolute inset-0"
-            >
-              {/* animated leaves carry their own blend mode (an animated parent would isolate it) */}
-              <div
-                data-story-fx={i}
-                className={cn(
-                  "t-label absolute inset-x-[var(--pad)] top-[calc(var(--nav-h)+16px)] flex justify-between gap-4 mix-blend-difference",
-                  hidden(i),
-                )}
-              >
-                <p>{f.index}</p>
-                <p className="text-right">{storyFrameTag(i + 1)}</p>
-              </div>
-              <p
-                data-story-fx={i}
-                className={cn(
-                  "t-d3 absolute bottom-10 left-[var(--pad)] max-w-[15ch] mix-blend-difference md:bottom-12 md:max-w-[17ch]",
-                  hidden(i),
-                )}
-              >
-                {f.sentence}
-                <span className="sr-only">
-                  {" "}
-                  {f.counter} · {f.caption}
-                </span>
-              </p>
-            </article>
-          ))}
         </div>
       </div>
     </section>
