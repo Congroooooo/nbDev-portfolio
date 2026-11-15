@@ -8,6 +8,7 @@ import { PillButton } from "@/components/ui";
 import { useReducedMotion } from "@/components/motion";
 import { useLenis } from "./SmoothScroll";
 import { LiveClock } from "./LiveClock";
+import { useScrollLock } from "./useScrollLock";
 
 const items = [
   { href: "/", label: "Home" },
@@ -23,16 +24,7 @@ export function MenuOverlay({ open, onClose }: { open: boolean; onClose: () => v
   const reduce = useReducedMotion();
   const panel = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    lenis?.stop();
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-      lenis?.start();
-    };
-  }, [open, lenis]);
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) return;

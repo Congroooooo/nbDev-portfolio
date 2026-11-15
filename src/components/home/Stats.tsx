@@ -23,7 +23,7 @@ function Row({ stat, index }: { stat: Stat; index: number }) {
           right ? "md:flex-row-reverse" : "md:flex-row"
         }`}
       >
-        <motion.div className="t-mega tabular-nums" style={reduce ? undefined : { color }}>
+        <motion.div key={reduce ? "static" : "scroll"} className="t-mega tabular-nums" style={reduce ? undefined : { color }}>
           <CountUp to={stat.value} from={from} />
         </motion.div>
         <div className={right ? "md:text-left" : "md:text-right"}>

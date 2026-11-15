@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/content";
 import { PillButton } from "@/components/ui";
 import { useLenis } from "./SmoothScroll";
@@ -25,6 +25,17 @@ export function Nav() {
     if (lenis) lenis.scrollTo(el);
     else el.scrollIntoView({ behavior: "smooth" });
   };
+
+  // The overlay is md:hidden; if the viewport widens past md while it is open, close it so the
+  // scroll lock and focus trap don't outlive the (now invisible) dialog.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = () => {
+      if (mq.matches) setOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const close = useCallback(() => {
     setOpen(false);

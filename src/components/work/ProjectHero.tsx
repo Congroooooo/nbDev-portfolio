@@ -54,7 +54,11 @@ export function ProjectHero({ project }: { project: Project }) {
 
       <div ref={coverRef} className="relative mt-14 aspect-[16/9] overflow-hidden rounded-[16px] bg-ink-2 md:mt-20">
         {project.image ? (
-          <motion.div className="absolute inset-x-0 -top-[5%] h-[110%]" style={reduce ? undefined : { y }}>
+          <motion.div
+            key={reduce ? "static" : "parallax"}
+            className="absolute inset-x-0 -top-[5%] h-[110%]"
+            style={reduce ? undefined : { y }}
+          >
             <Image
               src={project.image.src}
               alt={project.image.alt}

@@ -6,4 +6,5 @@ export { experience } from './experience';
 export { skillGroups } from './skills';
 export { awards, events } from './recognition';
 export { certificates } from './certificates';
+export { education } from './education';
 export { hero, storyFrames, storyFrameTag, selectedWork, stack, wins, stats, contact, workPage, hackathonsPage, aboutPage, notFound } from './home';

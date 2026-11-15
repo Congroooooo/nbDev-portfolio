@@ -68,7 +68,7 @@ export function WinsCarousel() {
         onFocus={() => setPaused(true)}
         onBlur={() => setPaused(false)}
       >
-        <div role="tabpanel" id="wins-panel" className="min-h-[34rem] md:min-h-[26rem]">
+        <div role="tabpanel" id="wins-panel" aria-labelledby={`wins-tab-${idx}`} className="min-h-[34rem] md:min-h-[26rem]">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={idx}

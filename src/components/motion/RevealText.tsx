@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion as useRM } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "./useReducedMotion";
 import { cn } from "@/lib/cn";
 
 type Tag = "h1" | "h2" | "h3" | "p" | "span";
@@ -25,7 +26,7 @@ export function RevealText({
   className?: string;
   delay?: number;
 }) {
-  const reduce = useRM() ?? false;
+  const reduce = useReducedMotion();
   const Comp = tags[as];
   const words = children.split(" ");
 

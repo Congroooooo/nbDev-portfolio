@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { aboutPage, awards, certificates, events, experience, site, skillGroups } from "@/content";
+import { aboutPage, awards, certificates, education, events, experience, site, skillGroups } from "@/content";
 import { Section, SectionLabel, PillButton, Chip } from "@/components/ui";
 import { ExperienceList } from "@/components/about/ExperienceList";
 import { SkillsGrid } from "@/components/about/SkillsGrid";
 import { Recognition } from "@/components/about/Recognition";
 import { CertificatesGrid } from "@/components/about/CertificatesGrid";
+import { EducationList } from "@/components/about/Education";
 
 export const metadata: Metadata = { title: "About · Nicko Balmes" };
 
@@ -41,8 +42,12 @@ export default function AboutPage() {
         <SectionLabel className="mb-10 text-mute">04 · Recognition</SectionLabel>
         <Recognition awards={awards} events={events} />
       </Section>
+      <Section tone="bone" id="education" className="pt-0">
+        <SectionLabel className="mb-10 text-mute">05 · Education</SectionLabel>
+        <EducationList items={education} />
+      </Section>
       <Section tone="ink" id="certificates">
-        <SectionLabel className="mb-10 text-mute">05 · Certificates</SectionLabel>
+        <SectionLabel className="mb-10 text-mute">06 · Certificates</SectionLabel>
         <CertificatesGrid items={certificates} />
       </Section>
     </>

@@ -31,6 +31,11 @@ describe('content', () => {
     expect(certificates).toHaveLength(11);
     expect(experience).toHaveLength(3);
   });
+  test('2 education entries: BSCS then SHS', () => {
+    expect(content.education).toHaveLength(2);
+    expect(content.education[0]).toEqual({ degree: 'Bachelor of Science in Computer Science', school: 'STI College Lucena', dates: '2022 – July 2026' });
+    expect(content.education[1]).toEqual({ degree: 'Senior High School (STEM)', school: 'Dr. Maria D. Pastrana National High School', dates: '2022' });
+  });
   test('hackathonId / projectSlug cross-references resolve', () => {
     const hIds = new Set(hackathons.map((h) => h.id));
     const slugs = new Set(projects.map((p) => p.slug));

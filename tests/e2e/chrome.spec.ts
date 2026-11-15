@@ -50,3 +50,14 @@ test("404 copy", async ({ page }) => {
   await expect(page.getByText("This page didn't ship.")).toBeVisible();
   await expect(page.getByRole("link", { name: /Back home/ })).toBeVisible();
 });
+
+test("footer columns: Explore / Connect / Contact", async ({ page }) => {
+  await page.goto("/work");
+  const footer = page.locator("footer#contact");
+  for (const label of ["Explore", "Connect", "Contact"]) {
+    await expect(footer.getByText(label, { exact: true })).toBeVisible();
+  }
+  await expect(footer.locator('a[href="mailto:nckoblms@gmail.com"]')).toHaveCount(2);
+  await expect(footer.getByText("Mauban, Quezon · GMT+8", { exact: true })).toBeVisible();
+  await expect(footer.getByRole("link", { name: /Download CV/ })).toHaveAttribute("href", "/Nicko_Balmes_Resume.pdf");
+});

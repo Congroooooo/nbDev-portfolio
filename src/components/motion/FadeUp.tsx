@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion as useRM } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "./useReducedMotion";
 
 export function FadeUp({
   children,
@@ -11,7 +12,7 @@ export function FadeUp({
   className?: string;
   delay?: number;
 }) {
-  const reduce = useRM() ?? false;
+  const reduce = useReducedMotion();
   if (reduce) return <div className={className}>{children}</div>;
   return (
     <motion.div

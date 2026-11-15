@@ -42,3 +42,15 @@ test("certificate lightbox keyboard", async ({ page }) => {
   await expect(dialog).toBeHidden();
   await expect(buttons.first()).toBeFocused();
 });
+
+test("about education", async ({ page }) => {
+  await page.goto("/about");
+  const edu = page.locator("#education");
+  await expect(edu.getByText("05 · Education")).toBeVisible();
+  await expect(edu.getByRole("heading", { name: "Bachelor of Science in Computer Science" })).toBeVisible();
+  await expect(edu.getByText("STI College Lucena", { exact: true })).toBeVisible();
+  await expect(edu.getByText("2022 – July 2026")).toBeVisible();
+  await expect(edu.getByRole("heading", { name: "Senior High School (STEM)" })).toBeVisible();
+  await expect(edu.getByText("Dr. Maria D. Pastrana National High School")).toBeVisible();
+  await expect(page.locator("#certificates").getByText("06 · Certificates")).toBeVisible();
+});

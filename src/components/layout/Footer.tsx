@@ -35,7 +35,7 @@ export function Footer() {
 
         <div className="mt-20 grid gap-10 border-t border-line pt-10 md:grid-cols-3">
           <div>
-            <p className="t-label font-mono text-mute">Navigate</p>
+            <p className="t-label font-mono text-mute">Explore</p>
             <ul className="mt-4 flex flex-col gap-2">
               {nav.map((n) => (
                 <li key={n.href}>
@@ -47,7 +47,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="t-label font-mono text-mute">Elsewhere</p>
+            <p className="t-label font-mono text-mute">Connect</p>
             <ul className="mt-4 flex flex-col gap-2">
               {site.socials.map((s) => (
                 <li key={s.label}>
@@ -59,14 +59,19 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="t-label font-mono text-mute">Details</p>
+            <p className="t-label font-mono text-mute">Contact</p>
             <ul className="mt-4 flex flex-col gap-2">
+              <li>
+                <a href={`mailto:${contact.email}`} className="transition-colors hover:text-accent">
+                  {contact.email}
+                </a>
+              </li>
+              <li className="text-mute">Mauban, Quezon · GMT+8</li>
               <li>
                 <ArrowLink href={site.cv} download>
                   Download CV
                 </ArrowLink>
               </li>
-              <li className="text-mute">{site.location}</li>
               <li>
                 <LiveClock className="font-mono text-[14px] text-mute" />
               </li>

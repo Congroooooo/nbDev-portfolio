@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import type { Img } from "@/content/types";
+import { useScrollLock } from "@/components/layout/useScrollLock";
 
 export function Lightbox({
   images,
@@ -22,15 +23,10 @@ export function Lightbox({
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const n = images.length;
+  useScrollLock(open);
 
   useEffect(() => {
-    if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
+    if (open) closeRef.current?.focus();
   }, [open]);
 
   useEffect(() => {
