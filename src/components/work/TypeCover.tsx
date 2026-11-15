@@ -7,17 +7,20 @@ export function TypeCover({ name, className }: { name: string; className?: strin
       data-testid="type-cover"
       role="img"
       aria-label={`${name} cover`}
-      className={cn("flex h-full w-full flex-col justify-end overflow-hidden bg-ink p-[6cqw] text-bone", className)}
+      className={cn("h-full w-full overflow-hidden border border-line bg-ink-2 text-bone", className)}
       style={{ containerType: "inline-size" }}
     >
-      <p
-        aria-hidden
-        className="font-mono font-medium break-words"
-        style={{ fontSize: "clamp(20px, 9cqw, 150px)", lineHeight: 0.95, letterSpacing: "-0.04em" }}
-      >
-        {name}
-      </p>
-      <span aria-hidden className="mt-[2.5cqw] block h-[0.8cqw] min-h-[3px] w-[18cqw] bg-accent" />
+      {/* Padding lives on an inner element so cqw resolves against the outer container. */}
+      <div className="flex h-full w-full flex-col justify-end p-[6cqw]">
+        <p
+          aria-hidden
+          className="font-mono font-medium break-words"
+          style={{ fontSize: "clamp(20px, 9cqw, 150px)", lineHeight: 0.95, letterSpacing: "-0.04em" }}
+        >
+          {name}
+        </p>
+        <span aria-hidden className="mt-[2.5cqw] block h-[0.8cqw] min-h-[3px] w-[18cqw] bg-accent" />
+      </div>
     </div>
   );
 }

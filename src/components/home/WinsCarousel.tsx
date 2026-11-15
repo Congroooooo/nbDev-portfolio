@@ -94,7 +94,7 @@ export function WinsCarousel() {
                           "--s": i / words.length,
                           "--n": words.length,
                           color:
-                            "color-mix(in srgb, var(--ink) calc(clamp(0, (var(--p) * 1.4 - var(--s)) * var(--n), 1) * 100%), var(--bone-2))",
+                            "color-mix(in srgb, var(--ink) calc(clamp(0, (var(--p) * 1.4 - var(--s)) * var(--n), 1) * 100%), #767873)",
                         } as CSSProperties
                       }
                     >

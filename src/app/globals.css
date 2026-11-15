@@ -54,6 +54,12 @@
   }
 }
 
+/* Mute text must hold AA (≥4.5:1) on bone; #8a8c88 is only ~2.9:1 there. */
+[data-tone="bone"] {
+  --color-mute: #5c5e5a;
+  --mute: #5c5e5a;
+}
+
 html {
   background: var(--ink);
   color: var(--bone);

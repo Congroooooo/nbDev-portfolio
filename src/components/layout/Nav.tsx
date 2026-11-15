@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { site } from "@/content";
 import { PillButton } from "@/components/ui";
 import { useLenis } from "./SmoothScroll";
@@ -26,10 +26,10 @@ export function Nav() {
     else el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const close = () => {
+  const close = useCallback(() => {
     setOpen(false);
     menuBtn.current?.focus();
-  };
+  }, []);
 
   return (
     <>
